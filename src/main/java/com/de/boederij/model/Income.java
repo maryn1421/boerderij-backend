@@ -1,7 +1,6 @@
 package com.de.boederij.model;
 
-import lombok.Data;
-import lombok.Generated;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -9,7 +8,10 @@ import java.util.Date;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "income")
+@Builder
 public class Income {
 
     @Id

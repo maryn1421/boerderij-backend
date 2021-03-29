@@ -1,9 +1,11 @@
 package com.de.boederij.controller;
 
+import com.de.boederij.model.Income;
 import com.de.boederij.model.Order;
 import com.de.boederij.payload.OrderDay;
 import com.de.boederij.payload.OrderRequest;
 import com.de.boederij.payload.OrderResponse;
+import com.de.boederij.repository.IncomeRepository;
 import com.de.boederij.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,9 @@ public class OrderController {
 
     @Autowired
     OrderRepository orderRepository;
+
+    @Autowired
+    IncomeRepository incomeRepository;
 
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/{user_id}/all")
@@ -60,6 +65,13 @@ public class OrderController {
             } else {
                 order.setFinished(true);
                 Object response = orderRepository.save(order);
+                Income incomeObject = Income.builder()
+                    .name(optionalOrder.get().getName())
+                    .incomeOptionId(optionalOrder.get().getOptionType())
+                    .userId(optionalOrder.get().getUserId())
+                    .value(Double.valueOf(optionalOrder.get().getPrice()))
+                    .date(optionalOrder.get().getDate()).build();
+                incomeRepository.save(incomeObject);
 
                 if (response.getClass().equals(Order.class)) {
                     return ResponseEntity.ok("A rendelés sikeresen módosításrea került!");
