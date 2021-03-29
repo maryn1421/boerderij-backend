@@ -1,8 +1,10 @@
 package com.de.boederij.model;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Data
@@ -17,7 +19,17 @@ public class Order {
     private String name;
 
     @Column(nullable = false)
-    private Timestamp date;
+    @Temporal(TemporalType.DATE)
+    private Date date;
+
+    @Column
+    private Boolean finished;
+
+    @Column(nullable = false)
+    private Integer price;
+
+    @Column(nullable = false)
+    private Long optionType;
 
     @Column(name = "user_id")
     private Long userId;
