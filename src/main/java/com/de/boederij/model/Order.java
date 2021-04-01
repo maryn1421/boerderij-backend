@@ -25,6 +25,9 @@ public class Order {
     @Column
     private Boolean finished;
 
+    @Column
+    private Boolean isPaid;
+
     @Column(nullable = false)
     private Integer price;
 
