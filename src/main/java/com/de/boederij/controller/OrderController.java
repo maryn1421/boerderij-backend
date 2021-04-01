@@ -119,6 +119,7 @@ public class OrderController {
         orderObject.setFinished(false);
         orderObject.setOptionType(orderRequest.getTypeId());
         orderObject.setPrice(orderRequest.getPrice());
+        orderObject.setFinished(false);
         Object response = orderRepository.save(orderObject);
 
         if (response.getClass().equals(Order.class)) {
