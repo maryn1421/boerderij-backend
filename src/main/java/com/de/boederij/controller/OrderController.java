@@ -86,7 +86,7 @@ public class OrderController {
     }
 
      @PreAuthorize("hasRole('USER')")
-    @PutMapping("/{user_id}/paid/{order_id}")
+    @PutMapping("/{user_id}/finish/{order_id}")
     public ResponseEntity<String> finishORder(@PathVariable("user_id") Long userId, @PathVariable("order_id") Long orderId) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
 
