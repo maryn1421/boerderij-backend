@@ -85,6 +85,29 @@ public class OrderController {
         }
     }
 
+     @PreAuthorize("hasRole('USER')")
+    @PutMapping("/{user_id}/paid/{order_id}")
+    public ResponseEntity<String> finishORder(@PathVariable("user_id") Long userId, @PathVariable("order_id") Long orderId) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            if (!order.getUserId().equals(userId)) {
+                return ResponseEntity.badRequest().build();
+            } else {
+                order.setFinished(true);
+                Object response = orderRepository.save(order);
+                if (response.getClass().equals(Order.class)) {
+                    return ResponseEntity.ok("A rendelés sikeresen módosításrea került!");
+                } else {
+                    return ResponseEntity.badRequest().build();
+                }
+            }
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 
 
 
