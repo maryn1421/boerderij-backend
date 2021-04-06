@@ -54,8 +54,8 @@ public class OrderController {
 
 
     @PreAuthorize("hasRole('USER')")
-    @PutMapping("/{user_id}/finish/{order_id}")
-    public ResponseEntity<String> finishOrder(@PathVariable("user_id") Long userId, @PathVariable("order_id") Long orderId) {
+    @PutMapping("/{user_id}/paid/{order_id}")
+    public ResponseEntity<String> paidOrder(@PathVariable("user_id") Long userId, @PathVariable("order_id") Long orderId) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
 
         if (optionalOrder.isPresent()) {
@@ -63,7 +63,7 @@ public class OrderController {
             if (!order.getUserId().equals(userId)) {
                 return ResponseEntity.badRequest().build();
             } else {
-                order.setFinished(true);
+                order.setIsPaid(true);
                 Object response = orderRepository.save(order);
                 Income incomeObject = Income.builder()
                     .name(optionalOrder.get().getName())
@@ -83,9 +83,10 @@ public class OrderController {
         } else {
             return ResponseEntity.badRequest().build();
         }
-
-
     }
+
+
+
 
 
     @PreAuthorize("hasRole('USER')")
@@ -125,6 +126,20 @@ public class OrderController {
         if (response.getClass().equals(Order.class)) {
             return ResponseEntity.ok("A rendelés sikeresen hozzáadásra került!");
         } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @DeleteMapping("/delete/{orderId}")
+    public ResponseEntity<String> deleteOrderById(@PathVariable Long orderId) {
+        long before = orderRepository.count();
+        orderRepository.deleteById(orderId);
+        long after = orderRepository.count();
+        if (before < after) {
+            return ResponseEntity.ok("A rendelés sikeresen törlésre került");
+        }
+        else {
             return ResponseEntity.badRequest().build();
         }
     }
