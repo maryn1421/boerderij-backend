@@ -2,6 +2,7 @@ package com.de.boederij.controller;
 
 import com.de.boederij.model.Animal;
 import com.de.boederij.model.Cost;
+import com.de.boederij.model.Income;
 import com.de.boederij.payload.CostRequest;
 import com.de.boederij.repository.CostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,4 +62,11 @@ public class CostController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+
+    @GetMapping("/filter/{optionId}/{userId}")
+    public List<Cost> getIncomesByOptionId(@PathVariable Long optionId, @PathVariable Long userId) {
+        return costRepository.getAllByUserIdAndOptionId(userId, optionId);
+    }
+
 }

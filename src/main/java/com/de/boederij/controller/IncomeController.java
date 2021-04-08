@@ -62,8 +62,7 @@ public class IncomeController {
     }
 
 
-    @PreAuthorize("hasRole('USER')")
-    @GetMapping("/{optionId}/{userId}")
+    @GetMapping("/filter/{optionId}/{userId}")
     public List<Income> getIncomesByOptionId(@PathVariable Long optionId, @PathVariable Long userId) {
         return incomeRepository.getAllByUserIdAndIncomeOptionId(userId, optionId);
     }
