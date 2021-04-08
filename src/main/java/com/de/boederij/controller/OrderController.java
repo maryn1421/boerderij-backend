@@ -167,4 +167,14 @@ public class OrderController {
         }
     }
 
+
+
+    @GetMapping("/filter/{optionId}/{userId}")
+    public List<Order> getOrdersByOptionId(@PathVariable Long optionId, @PathVariable Long userId) {
+        return orderRepository.getAllByUserIdAndOptionType(userId, optionId);
+
+    }
+
+
+
 }
