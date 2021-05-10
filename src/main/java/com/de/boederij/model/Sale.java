@@ -1,7 +1,12 @@
 package com.de.boederij.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +16,9 @@ import java.util.Date;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Sale {
 
 
@@ -34,12 +42,15 @@ public class Sale {
 
     private Date endDate;
 
+    private String city;
+
+    private String province;
+
     private Boolean isActive;
+
 
     @ManyToOne
     private User user;
-
-
 
 
 }
