@@ -5,6 +5,7 @@ import com.de.boederij.model.User;
 import com.de.boederij.payload.SaleRequest;
 import com.de.boederij.repository.SaleRepository;
 import com.de.boederij.repository.UserRepository;
+import com.de.boederij.service.MarketProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,9 @@ public class MarketController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    MarketProvider marketProvider;
 
     @GetMapping("/all-active")
     public List<Sale> getActiveSales() {
@@ -112,5 +116,12 @@ public class MarketController {
           return Sale.builder().build();
       }
     }
+
+    @GetMapping("/filter/{province}/{type}/{sortOrder}")
+    public List<Sale> filterSalesByProvinceAndOrType(@PathVariable("province") String province, @PathVariable String type, @PathVariable String sortOrder) {
+        return marketProvider.getFilteredSales(province, type, sortOrder);
+    }
+
+
 }
 
