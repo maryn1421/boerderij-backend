@@ -110,7 +110,10 @@ public class MarketController {
     @GetMapping("/sale/{id}")
     public Sale getSingleSaleById(@PathVariable Long id) {
         if (saleRepository.findById(id).isPresent()) {
-            return saleRepository.findById(id).get();
+            Sale sale = saleRepository.findById(id).get();
+            sale.setViewNumber(sale.getViewNumber() + 1);
+            saleRepository.save(sale);
+            return sale;
         } else {
             return Sale.builder().build();
         }
