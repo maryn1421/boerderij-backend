@@ -9,9 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
+@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -19,10 +23,22 @@ public class UserController {
 
 
 
-    @GetMapping("/test")
-    public String test(){
-        return "test";
+
+
+
+    @GetMapping("/user/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public User getUserById(@PathVariable Long id) {
+        Optional<User> byId = userRepository.findById(id);
+        if (byId.isPresent()) {
+
+            return byId.get();
+        }
+        else {
+             return User.builder().build();
+        }
     }
+
 
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")

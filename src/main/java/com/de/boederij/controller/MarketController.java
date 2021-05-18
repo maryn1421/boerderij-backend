@@ -72,7 +72,7 @@ public class MarketController {
         Map<String, Integer> response = new HashMap<>();
 
         response.put("status", 201);
-        response.put("id",Integer.parseInt(sale.getId().toString()));
+        response.put("id", Integer.parseInt(sale.getId().toString()));
         return response;
     }
 
@@ -102,24 +102,36 @@ public class MarketController {
                 return "Exception error";
             }
         } else {
-            return "Error";
+            return "Error while uploading the image";
         }
 
     }
 
     @GetMapping("/sale/{id}")
     public Sale getSingleSaleById(@PathVariable Long id) {
-      if   (saleRepository.findById(id).isPresent()) {
-          return saleRepository.findById(id).get();
-      }
-      else {
-          return Sale.builder().build();
-      }
+        if (saleRepository.findById(id).isPresent()) {
+            Sale sale = saleRepository.findById(id).get();
+            sale.setViewNumber(sale.getViewNumber() + 1);
+            saleRepository.save(sale);
+            return sale;
+        } else {
+            return Sale.builder().build();
+        }
     }
 
     @GetMapping("/filter/{province}/{type}/{sortOrder}")
     public List<Sale> filterSalesByProvinceAndOrType(@PathVariable("province") String province, @PathVariable String type, @PathVariable String sortOrder) {
         return marketProvider.getFilteredSales(province, type, sortOrder);
+    }
+
+    @GetMapping("/all-sale/{userId}")
+    public List<Sale> getSalesByUserId(@PathVariable Long userId) {
+        if (userRepository.findById(userId).isPresent()) {
+            User user = userRepository.findById(userId).get();
+            return saleRepository.findAllByUser(user);
+        } else {
+            return new ArrayList<>();
+        }
     }
 
 
