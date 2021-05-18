@@ -102,7 +102,7 @@ public class MarketController {
                 return "Exception error";
             }
         } else {
-            return "Error";
+            return "Error while uploading the image";
         }
 
     }
